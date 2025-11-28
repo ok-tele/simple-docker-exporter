@@ -1,4 +1,5 @@
 import time
+import argparse
 import docker
 from prometheus_client import start_http_server, Gauge
 
@@ -107,12 +108,20 @@ def collect_metrics():
     # Для простоты скрипта этот шаг часто пропускают, но для чистоты данных он нужен.
 
 if __name__ == '__main__':
+    # Парсинг аргументов командной строки
+    parser = argparse.ArgumentParser(description='Docker Prometheus Exporter')
+    parser.add_argument('--port', '-p', type=int, default=8000,
+                        help='Port for Prometheus metrics HTTP server (default: 8000)')
+    parser.add_argument('--interval', '-i', type=int, default=5,
+                        help='Metrics collection interval in seconds (default: 5)')
+    args = parser.parse_args()
+
     # Запускаем HTTP сервер
-    port = 8000
-    start_http_server(port)
-    print(f"Docker Exporter running on port {port}. Watching running containers...")
-    
+    start_http_server(args.port)
+    print(f"Docker Exporter running on port {args.port}. Watching running containers...")
+    print(f"Collection interval: {args.interval} seconds")
+
     while True:
         collect_metrics()
         # Пауза между опросами (в секундах)
-        time.sleep(5)
+        time.sleep(args.interval)

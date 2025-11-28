@@ -7,3 +7,5 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     ports:
       - "8000:8000"
+    # Опциональные параметры для настройки (раскомментируйте если нужно):
+    # command: ["python", "-u", "docker-exporter.py", "--port", "8000", "--interval", "5"]
