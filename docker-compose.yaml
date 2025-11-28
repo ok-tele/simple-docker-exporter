@@ -1,0 +1,9 @@
+services:
+  docker-exporter:
+    build: .
+    restart: always
+    volumes:
+      # Самое важное: доступ к сокету
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - "8000:8000"
